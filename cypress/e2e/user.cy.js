@@ -1,5 +1,5 @@
 describe("users tests", function() {
-  it("should render user list", function() {
+  beforeEach(() => {
     cy.intercept("GET", "http://localhost:8080/users", {
       statusCode: 200,
       body: [
@@ -21,7 +21,9 @@ describe("users tests", function() {
     });
 
     cy.visit("http://localhost:3000");
+  });
 
+  it("should render user list", function() {
     cy.get("h2").should("contain", "用户列表");
 
     cy.get("li").should("have.length", 2);
@@ -33,5 +35,15 @@ describe("users tests", function() {
     cy.get("li")
       .eq(1)
       .should("contain", "Chelsey Kamren");
+  });
+
+  it("should render first user as default user", () => {
+    //GIVEN there are 2 users in user system
+    //When we visit the page
+    //Then we would see the first user's details
+    cy.get("h2").should("contain", "用户详情");
+    cy.get("h3").should("contain", "John Bret");
+    cy.contains("John.Bret@google.com");
+    cy.contains("hildegard.org");
   });
 });
