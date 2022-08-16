@@ -5,20 +5,29 @@ import UserDetails from "../userComponent/UserDetails";
 
 class App extends Component {
   state = {
-    users: []
+    users: [],
+    currentUser: {},
   };
 
   async componentDidMount() {
     const users = await fetchUsers();
-    this.setState({ users });
+    this.setState({
+      users,
+      currentUser: users[0]
+    });
   }
 
+  setCurrentUser = (user) => {
+    this.setState({
+      currentUser: user
+    });
+  };
+
   render() {
-    const firstUser = this.state.users[0] || {};
     return (
       <div className="App">
-          <UserList users={this.state.users}/>
-          <UserDetails firstUser={firstUser}/>
+          <UserList users={this.state.users} setCurrentUser={this.setCurrentUser}/>
+          <UserDetails currentUser={this.state.currentUser}/>
       </div>
     );
   }

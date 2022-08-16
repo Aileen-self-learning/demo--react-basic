@@ -1,3 +1,5 @@
+import React from "react";
+
 describe("users tests", function() {
   const mockUsers = [
     {
@@ -46,5 +48,15 @@ describe("users tests", function() {
     cy.get("h3").should("contain", `${mockUsers[0].firstName} ${mockUsers[0].lastName}`);
     cy.contains(`${mockUsers[0].email}`);
     cy.contains(`${mockUsers[0].website}`);
+  });
+
+  it('render second user details when clik on second user', () => {
+    //GIVEN there are 2 users in user system
+    //When click on second user
+    //Then we would see the second user's details
+    cy.contains("li", `${mockUsers[1].firstName} ${mockUsers[1].lastName}`).click();
+    cy.get("h3").should("contain", `${mockUsers[1].firstName} ${mockUsers[1].lastName}`);
+    cy.contains(`${mockUsers[1].email}`);
+    cy.contains(`${mockUsers[1].website}`);
   });
 });
