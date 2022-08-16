@@ -1,26 +1,27 @@
 describe("users tests", function() {
+  const mockUsers = [
+    {
+      id: 1,
+      firstName: "John",
+      lastName: "Bret",
+      email: "John.Bret@google.com",
+      website: "hildegard.org"
+    },
+    {
+      id: 2,
+      firstName: "Chelsey",
+      lastName: "Kamren",
+      email: "Chelsey.Kamren@google.com",
+      website: "demarco.info"
+    }
+  ];
   beforeEach(() => {
-    cy.intercept("GET", "http://localhost:8080/users", {
+    cy.intercept("GET", Cypress.env("API"), {
       statusCode: 200,
-      body: [
-        {
-          id: 1,
-          firstName: "John",
-          lastName: "Bret",
-          email: "John.Bret@google.com",
-          website: "hildegard.org"
-        },
-        {
-          id: 2,
-          firstName: "Chelsey",
-          lastName: "Kamren",
-          email: "Chelsey.Kamren@google.com",
-          website: "demarco.info"
-        }
-      ]
+      body: mockUsers
     });
 
-    cy.visit("http://localhost:3000");
+    cy.visit('/');
   });
 
   it("should render user list", function() {
@@ -30,11 +31,11 @@ describe("users tests", function() {
 
     cy.get("li")
       .eq(0)
-      .should("contain", "John Bret");
+      .should("contain", `${mockUsers[0].firstName} ${mockUsers[0].lastName}`);
 
     cy.get("li")
       .eq(1)
-      .should("contain", "Chelsey Kamren");
+      .should("contain", `${mockUsers[1].firstName} ${mockUsers[1].lastName}`);
   });
 
   it("should render first user as default user", () => {
@@ -42,8 +43,8 @@ describe("users tests", function() {
     //When we visit the page
     //Then we would see the first user's details
     cy.get("h2").should("contain", "用户详情");
-    cy.get("h3").should("contain", "John Bret");
-    cy.contains("John.Bret@google.com");
-    cy.contains("hildegard.org");
+    cy.get("h3").should("contain", `${mockUsers[0].firstName} ${mockUsers[0].lastName}`);
+    cy.contains(`${mockUsers[0].email}`);
+    cy.contains(`${mockUsers[0].website}`);
   });
 });
