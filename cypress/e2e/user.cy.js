@@ -22,6 +22,8 @@ describe("users tests", function() {
 
     cy.visit("http://localhost:3000");
 
+    cy.get("h2").should("contain", "用户列表");
+
     cy.get("li").should("have.length", 2);
 
     cy.get("li")
